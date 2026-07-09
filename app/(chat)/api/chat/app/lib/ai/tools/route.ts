@@ -313,8 +313,25 @@ export async function POST(request: Request) {
               modelId: chatModel,
               session,
             }),
-            editDocument: editDocument({ dataStream, session }),
-            getWeather,
+            editDocument: editDocument({ dataStream, session }) 
+              analyzeCompetitor: {
+    description: "深度竞品情报分析助手：输入竞品 URL 或功能描述，输出结构化对标报告。",
+    parameters: {
+      type: "object",
+      properties: {
+        url: { type: "string", description: "竞品网站 URL" },
+        focus: { type: "string", description: "重点分析的业务维度（如：定价、用户体验、核心功能）" }
+      },
+      required: ["url"]
+    },
+    execute: async ({ url, focus }) => {
+      return `正在对 ${url} 进行关于 ${focus || '全方位'} 的深度对标分析... [此处将连接你的分析引擎]`;
+    }
+  },
+  
+  requestSuggestions: requestSuggestions({ dataStream, modelId: chatModel, session }),
+  updateDocument: updateDocument({ dataStream, modelId: chatModel, session }),
+},
             requestSuggestions: requestSuggestions({
               dataStream,
               modelId: chatModel,
